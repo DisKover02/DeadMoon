@@ -4,7 +4,6 @@
 #include <ctime>
 #include <cstring>
 #include <conio.h>
-#include <vector>
 
 
 using namespace std;
@@ -12,47 +11,6 @@ using namespace std;
 int randomNum(int min, int max) {
     return  min + rand() % (max - min + 1);
 }
-
-
-//class Location {                                      Покищо цей клас ненада
-//private:
-//    bool forest;
-//    bool zabroshka;
-//    bool city;
-//    bool pesher;
-//    bool katakombs;
-//
-//    int mas[5] = {};
-//
-//public:
-//    Location(bool forest, bool zabroshka, bool city, bool pesher, bool katakombs) {
-//        this->forest = forest;
-//        this->zabroshka = zabroshka;
-//        this->city = city;
-//        this->pesher = pesher;
-//        this->katakombs = katakombs;
-//    }
-//
-//    int getForest() { return forest; }
-//    void setForest(bool valueForest) { forest = valueForest; }
-//
-//    int getZabroshka() { return zabroshka; }
-//    void setZabroshka(bool valueZabroshka) { zabroshka = valueZabroshka; }
-//
-//    int getCity() { return city; }
-//    void setCity(bool valueCity) { city = valueCity; }
-//
-//    int getPesher() { return pesher; }
-//    void setPesher(int valuePesher) { pesher = valuePesher; }
-//
-//    int getKatakombs() { return katakombs; }
-//    void setKatakombs(bool valueKatakombs) { katakombs = valueKatakombs; }
-//
-//    ~Location() {
-//
-//    }
-//
-//};
 
 class BasePerson {
 protected:
@@ -85,14 +43,58 @@ public:
     }
 };
 
-class Player : public BasePerson { // я хотів зробить наслідування але... свої причини є 
+class Armor {
 private:
+    string name;
+    int protection;
+public:
+    Armor(string name, int protection) {
+        this->name = name;
+        this->protection = protection;
+    }
+
+    string getName() { return name; }
+    void setName(string valueName) { name = valueName; }
+
+    int getProtection() { return protection; }
+    void setProtection(int valueProtection) { protection = valueProtection; }
+
+    ~Armor() {
+    }
+};
+
+class Weapon {
+private:
+    string name;
+    int damage;
+public:
+    Weapon(string name, int damage) {
+        this->name = name;
+        this->damage = damage;
+    }
+
+    string getName() { return name; }
+    void setName(string valueName) { name = valueName; }
+
+    int getDamage() { return damage; }
+    void setDamage(int valueDamage) { damage = valueDamage; }
+
+    ~Weapon() {
+
+    }
+};
+
+class Player : public BasePerson {
+private:
+    Weapon* weapon;
+    Armor* armor;
     int miss;
     int xp;
     int damage;
     int block;
     int chanceBlock;
 public:
+
     Player(string name, int energy, int hp, int miss, int xp, int damage, int block, int chanceBlock) : BasePerson(name, 1, energy, hp) {
         this->damage = damage;//strenght
         this->block = block;//endurance
@@ -118,12 +120,20 @@ public:
     void showStaticPlayer() {
         cout << "lvl = " << getLevel() << endl << "Energy = " << getEnergy() << endl << "Damage = " << getDamage() << endl << "Block damage = " << getBlock() << endl << "Hp = " << getHp() << endl << "XP = " << getXP() << endl << "Agility = " << getMiss() << "%" << endl;
     }
+
+    int damageWithWeapon() {
+        this->setDamage(this->getDamage() + weapon->getDamage());
+        return this->getDamage();
+    }
+    int blockWithArmor() {
+        this->setBlock(this->getBlock() + armor->getProtection());
+        return this->getBlock();
+    }
     ~Player() {
 
     }
 
 };
-
 
 class Monsters : public BasePerson {
 private:
@@ -154,6 +164,9 @@ public:
     void setScoreGetBoss(int valueScoreGetBoss) { ScoreGetBoss = valueScoreGetBoss; }
 
     //monsters
+    string getName() { return name; }
+    void setName(string valueName) { name = valueName; }
+
     int getChanceBlock() { return chanceBlock; }
     void setChanceBlock(int valueChanceBlock) { chanceBlock = valueChanceBlock; }
 
@@ -166,140 +179,7 @@ public:
     int getBlock() { return block; }
     void setBlock(int valueBlock) { block = valueBlock; }
 
-    void fightBoss(int damagePlayer, int HpPlayer, int PlayerXP, int PlayerMiss, int PlayerBlock, int chanceBlock) {
-        int tmpA;
-        while (HpBoss > 0) {
 
-            cout << endl << "Ваш удар " << " наніс " << damagePlayer << endl;
-            HpBoss = HpBoss - damagePlayer;
-            cout << "АБОБУС наніс " << DamageBoss << endl;
-            HpPlayer = HpPlayer - DamageBoss;
-            cout << endl;
-
-            if (randomNum(0, 100) <= PlayerMiss) {
-                cout << endl << "Ви уклонились від удара" << endl;
-                Sleep(2500);
-                continue;
-            }
-
-            if (randomNum(0, 100) <= chanceBlock) {
-                tmpA = getDamage() - PlayerBlock;
-                cout << endl << "Ви заблокували " << PlayerBlock << endl;
-                cout << "АБОБУС наніс " << tmpA << endl;
-                HpPlayer -= tmpA;
-                cout << endl;
-                Sleep(2500);
-                continue;
-            }
-
-            if (HpPlayer <= 0) {
-                int tmpQuestion;
-                cout << "Ви програли :(" << endl;
-                cout << "1)Вийти?" << endl << "2)Рестарт" << endl;
-                cin >> tmpQuestion;
-                if (tmpQuestion == 1) {
-                    exit(0);
-                }
-                else {
-                    continue;
-                }
-            }
-            Sleep(2000);
-        }
-        cout << "Ти вийграв(ла) У тебе залишилось " << HpPlayer << endl << "Ти получив(ла) " << getScoreGetBoss() << " XP";
-        setHpBoss(getHpBoss() + getHpBoss());
-        setDamageBoss(getDamageBoss() + getDamageBoss());
-        setScoreGetBoss(getScoreGetBoss() + getScoreGetBoss());
-
-    }
-
-    void fight(int damagePlayer, int HpPlayer, int PlayerXP, string tmpName, int PlayerMiss, int PlayerBlock, int chanceBlock) {
-        int tmpA;
-        while (hp > 0) {
-            cout << endl << "Ваш удар " << " наніс " << damagePlayer << endl;
-            hp = hp - damagePlayer;
-
-            if (randomNum(0, 100) <= PlayerMiss) {
-                cout << "Ви уклонились від удара" << endl;
-                Sleep(2500);
-                continue;
-            }
-
-            if (randomNum(0, 100) <= getChanceBlock()) {
-                tmpA = damagePlayer - getBlock();
-                cout << endl << tmpName << " заблокував " << damagePlayer << endl;
-                cout << "Ви нанесли " << tmpA << endl;
-                setHp(getHp() - tmpA);
-                cout << endl;
-                Sleep(2500);
-                continue;
-            }
-
-            if (randomNum(0, 100) <= chanceBlock) {
-                tmpA = getDamage() - PlayerBlock;
-                cout << endl << "Ви заблокували " << PlayerBlock << endl; // потім все перенесу в методи
-                cout << tmpName << " наніс " << tmpA << endl;
-                HpPlayer -= tmpA;
-                cout << endl;
-                Sleep(2500);
-                continue;
-            }
-
-            cout << tmpName << " наніс " << getDamage() << endl;
-            HpPlayer = HpPlayer - getDamage();
-            cout << endl;
-
-
-            Sleep(2500);
-
-        }
-
-        cout << "Ти вийграв(ла) У тебе залишилось " << HpPlayer << endl << "Ти получив(ла) " << getScoreGet() << " XP";
-
-    }
-
-    void distributeFight(int mesto, int damagePlayer, int HpPlayer, int PlayerXP, string tmpName, int PlayerMiss, int PlayerBlock, int chanceBlock) {
-        if (mesto == 1) {
-            cout << "\033[2J\033[1;1H";
-            cout << "Ви перейшли на локацію Ліс" << endl;
-
-            tmpName = masName[randomNum(0, 2)];
-            cout << endl << "Проти вас " << tmpName << " його Hp =" << " " << getHp();
-            fight(damagePlayer, HpPlayer, PlayerXP, tmpName, PlayerMiss, PlayerBlock, chanceBlock);
-        }
-        else if (mesto == 2) {
-            cout << "\033[2J\033[1;1H";
-            cout << "Ви перейшли на локацію Заброшка" << endl;
-
-            tmpName = masName[randomNum(3, 7)];
-            cout << endl << "Проти вас " << tmpName << " його Hp =" << " " << getHp();
-            fight(damagePlayer, HpPlayer, PlayerXP, tmpName, PlayerMiss, PlayerBlock, chanceBlock);
-        }
-        else if (mesto == 3) {
-            cout << "\033[2J\033[1;1H";
-            cout << "Ви перейшли на локацію Город" << endl;
-
-            tmpName = masName[randomNum(7, 10)];
-            cout << endl << "Проти вас " << tmpName << " його Hp =" << " " << getHp();
-            fight(damagePlayer, HpPlayer, PlayerXP, tmpName, PlayerMiss, PlayerBlock, chanceBlock);
-        }
-        else if (mesto == 4) {
-            cout << "\033[2J\033[1;1H";
-            cout << "Ви перейшли на локацію Пещери" << endl;
-
-            tmpName = masName[randomNum(10, 14)];
-            cout << endl << "Проти вас " << tmpName << " його Hp =" << " " << getHp();
-            fight(damagePlayer, HpPlayer, PlayerXP, tmpName, PlayerMiss, PlayerBlock, chanceBlock);
-        }
-        else if (mesto == 5) {
-            cout << "\033[2J\033[1;1H";
-            cout << "Ви перейшли на локацію Катакомби" << endl;
-
-            cout << endl << "Проти вас АБОБУС його Hp =" << " " << getHpBoss();
-            fightBoss(damagePlayer, HpPlayer, PlayerXP, PlayerMiss, PlayerBlock, chanceBlock);
-        }
-
-    }
 
     ~Monsters() {
 
@@ -310,9 +190,17 @@ public:
 class Engine {
 private:
     string masName[14] = { "Дікарь", "Ригач", "Соплежуй", "Лазун", "Паркурщик", "Лопатокрил",  "Хітман", "Очкарик", "ТікТокер", "Лінкольн Абрамс", "Ходунок", "Весельнік", "Камнебуй", "Дедінсайд" };
+    string armorName[5] = { "a", "f", "d", "h", "k" };
+    string weaponName[5] = { "v", "g", "h", "k", "a" };
 
     int randomNum(int min, int max) {
         return  min + rand() % (max - min + 1);
+    }
+    string generateNameWeapon() {
+        return this->weaponName[randomNum(0, 5)];
+    }
+    string generateNameArmor() {
+        return this->armorName[randomNum(0, 5)];
     }
 
     string generateMonsterName(int location) {
@@ -335,6 +223,13 @@ private:
         return this->masName[this->randomNum(x, y)];
     }
 public:
+    Weapon* regenerateWeapon(string name, int damage) {
+        return new Weapon(generateNameWeapon(), 15);
+    }
+    Armor* regenerateArmor(string name, int damage) {
+        return new Armor(generateNameArmor(), 15);
+    }
+
     Player* createPlayer(string name, int classType) {
         int block = 30, damage = 30, miss = 30;
 
@@ -348,9 +243,25 @@ public:
             miss *= 2;
         }
 
-        return new Player(name, 30, 300, miss, 0, damage, block, 10);
+        return new Player(name, 30, 100, miss, 0, damage, block, 10);
     }
 
+    void converterXP(Player* player) {
+        int convertXp = 100;
+        if (player->getXP() >= convertXp) {
+            convertXp += 50;
+            player->setLevel(player->getLevel() + 1);
+            cout << endl << "Поздравляю! у вас" << player->getLevel() << " lvl";
+            player->setXP(0);
+
+            player->setHp(player->getHp() + 10); // hp
+            player->setDamage(player->getDamage() + 3); // damage
+            player->setMiss(player->getMiss() + 1); // miss
+            player->setBlock(player->getBlock() + 3); // block
+            player->setChanceBlock(player->getChanceBlock() + 1); // chanceBlock
+
+        }
+    }
     Monsters* generateMonster(int level, int location) {
         if (level > 1) {
             if (rand() % 3 == 1) {
@@ -368,21 +279,146 @@ public:
 
         return new Monsters(
             this->generateMonsterName(location),
-            100 * level,
+            50 * level,
             level,
             30 * level,
             15 * level,
             10 * level,
-            150 * level,
-            5 * level
+            50 * level,
+            level
         );//string name, int scoreGet, int level, int energy, int damage, int block, int hp, int chanceBlock
     }
 
-    bool fightOneRound(Player* player, Monsters* monster) {
+
+    void fightBoss(Player* player, Monsters* monster) {
+        int tmpA;
+        while (monster->getHpBoss() > 0) {
+
+            cout << endl << "Ваш удар наніс " << player->getDamage() << endl;
+            monster->setHpBoss(monster->getHpBoss() - player->getDamage());
+            cout << "АБОБУС наніс " << monster->getDamageBoss() << endl;
+            player->setHp(player->getHp() - monster->getDamageBoss());
+            cout << endl;
+
+            if (randomNum(0, 100) <= player->getMiss()) {
+                cout << endl << "Ви уклонились від удара" << endl;
+                Sleep(2500);
+                continue;
+            }
+
+            if (randomNum(0, 100) <= player->getChanceBlock()) {
+                tmpA = monster->getDamageBoss() - player->getBlock();
+                cout << endl << "Ви заблокували " << player->getBlock() << endl;
+                cout << "АБОБУС наніс " << tmpA << endl;
+                player->setHp(player->getHp() - tmpA);
+                cout << endl;
+                Sleep(2500);
+                continue;
+            }
+
+            Sleep(2000);
+        }
+        cout << "Ти вийграв(ла) У тебе залишилось " << player->getHp() << endl << "Ти получив(ла) " << monster->getScoreGetBoss() << " XP";
+        //monster->setHpBoss(monster->getHpBoss() + monster->getHpBoss());
+        //monster->setDamageBoss(monster->getDamageBoss() + monster->getDamageBoss());
+        //monster->setScoreGetBoss(monster->getScoreGetBoss() + monster->getScoreGetBoss());
+        player->setXP(player->getXP() + monster->getScoreGetBoss());
 
     }
-};
 
+    void fight(Player* player, Monsters* monster) {
+        int tmpA;
+
+        while (monster->getHp() > 0) {
+            cout << endl << "Ваш удар " << " наніс " << player->getDamage() << endl;
+            monster->setHp(monster->getHp() - player->getDamage());
+
+            if (randomNum(0, 100) <= player->getMiss()) {
+                cout << "Ви уклонились від удара " << endl;
+                if (randomNum(0, 100) <= 50) {// krit
+                    cout << "та нанесли критический урон" << endl;
+                    tmpA = player->getDamage() * 2;
+                    monster->setHp(monster->getHp() - tmpA);
+                }
+                Sleep(2500);
+                continue;
+            }
+
+            if (randomNum(0, 100) <= player->getChanceBlock()) {
+                tmpA = player->getDamage() - monster->getBlock();
+                cout << endl << monster->getName() << " заблокував " << monster->getBlock() << endl;
+                cout << "Ви нанесли " << tmpA << endl;
+                player->setHp(player->getHp() - tmpA);
+                cout << endl;
+                Sleep(2500);
+                continue;
+            }
+
+            if (randomNum(0, 100) <= player->getChanceBlock()) {
+                tmpA = monster->getDamage() - player->getBlock();
+                cout << endl << "Ви заблокували " << player->getBlock() << endl;
+                cout << monster->getName() << " наніс " << tmpA << endl;
+                player->setHp(player->getHp() - tmpA);
+                cout << endl;
+                Sleep(2500);
+                continue;
+            }
+
+            cout << monster->getName() << " наніс " << monster->getDamage() << endl;
+            player->setHp(player->getHp() - monster->getDamage());
+            cout << endl;
+
+
+            Sleep(2500);
+
+        }
+
+        cout << "Ти вийграв(ла) У тебе залишилось " << player->getHp() << endl << "Ти получив(ла) " << monster->getScoreGet() << " XP";
+    }
+    void distributeFight(int mesto, Player* player, Monsters* monster) {
+        if (mesto == 1) {
+            cout << "\033[2J\033[1;1H";
+            cout << "Ви перейшли на локацію Ліс" << endl;
+
+            monster->getName();
+            cout << endl << "Проти вас " << monster->getName() << " його Hp =" << " " << monster->getHp();
+            fight(player, monster);
+        }
+        else if (mesto == 2) {
+            cout << "\033[2J\033[1;1H";
+            cout << "Ви перейшли на локацію Заброшка" << endl;
+
+            monster->getName();
+            cout << endl << "Проти вас " << monster->getName() << " його Hp =" << " " << monster->getHp();
+            fight(player, monster);
+        }
+        else if (mesto == 3) {
+            cout << "\033[2J\033[1;1H";
+            cout << "Ви перейшли на локацію Город" << endl;
+
+            monster->getName();
+            cout << endl << "Проти вас " << monster->getName() << " його Hp =" << " " << monster->getHp();
+            fight(player, monster);
+        }
+        else if (mesto == 4) {
+            cout << "\033[2J\033[1;1H";
+            cout << "Ви перейшли на локацію Пещери" << endl;
+
+            monster->getName();
+            cout << endl << "Проти вас " << monster->getName() << " його Hp =" << " " << monster->getHp();
+            fight(player, monster);
+        }
+        else if (mesto == 5) {
+            cout << "\033[2J\033[1;1H";
+            cout << "Ви перейшли на локацію Катакомби" << endl;
+
+            cout << endl << "Проти вас АБОБУС його Hp =" << " " << monster->getHpBoss();
+            fightBoss(player, monster);
+        }
+
+    }
+
+};
 
 void progressBar(int sleep) {
     cout << endl << endl;
@@ -395,17 +431,15 @@ void progressBar(int sleep) {
     system("cls");
 }
 
-int main() { // покищо все примітивно але буде прокачано
-
+int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     srand(time(NULL));
     progressBar(100);
 
-    //Location* location = new Location(false, false, false, false, false);
-    Player* player = NULL; //  int miss%, int XP, int level, int energy, int damage, int block, int hp, int chanceBlock
+    Player* player = NULL; 
     Engine* engine = new Engine();
-
+    Monsters* monster = NULL;
     int fraction;
     string name;
     int mesto;
@@ -423,11 +457,8 @@ int main() { // покищо все примітивно але буде прокачано
         exit(0);
     }
 
-    player = engine->createPlayer(name, fraction);
-
     cout << "Яку ви виберите локацію для свого первого похода?" << endl;
 
-    int converterXP = 100;
     while (true) {
 
         cout << endl << "1)Ліс" << endl << "2)Заброшка" << endl << "3)Місто" << endl << "4)Печери" << endl << "5) Катакомби Босс(Важко)";
@@ -438,30 +469,15 @@ int main() { // покищо все примітивно але буде прокачано
             exit(0);
         }
 
-        engine->generateMonster(player->getLevel(), mesto);
+        player = engine->createPlayer(name, fraction);
+        monster = engine->generateMonster(player->getLevel(), mesto);
 
         progressBar(80);
 
-        monsters->distributeFight(mesto, player->getDamage(), player->getHp(), player->getXP(), name, player->getMiss(), player->getBlock(), player->getChanceBlock());
-        player->setXP(player->getXP() + monsters->getScoreGet());
+        engine->distributeFight(mesto, player, monster);
+        engine->converterXP(player);
+        player->setXP(player->getXP() + monster->getScoreGet());
 
-        if (player->getXP() >= converterXP) {
-            converterXP += 50;
-            player->setLevel(player->getLevel() + 1);
-            cout << endl << "Поздравляю! у вас" << player->getLevel() << " lvl";
-            player->setXP(0);
-
-            player->setHp(player->getHp() + 10); // hp
-            player->setDamage(player->getDamage() + 3); // damage
-            player->setMiss(player->getMiss() + 1); // miss
-            player->setBlock(player->getBlock() + 3); // block
-            player->setChanceBlock(player->getChanceBlock() + 1); // chanceBlock
-
-        }
-        monsters->setBlock(player->getBlock() + 2); // block
-        monsters->setChanceBlock(player->getChanceBlock() + 1); // chanceBlock
-        monsters->setHp(player->getLevel() * 20); //hp monster
-        monsters->setDamage(player->getLevel() * 15);//damage monster
         cout << endl << "Статистика вашого героя" << endl;
         player->showStaticPlayer();
         Sleep(3000);
@@ -469,4 +485,3 @@ int main() { // покищо все примітивно але буде прокачано
         cout << "\033[2J\033[1;1H";
     }
 }
-
