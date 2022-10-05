@@ -189,7 +189,7 @@ public:
 
 class Engine {
 private:
-    string masName[14] = { "ƒ≥Í‡¸", "–Ë„‡˜", "—ÓÔÎÂÊÛÈ", "À‡ÁÛÌ", "œ‡ÍÛ˘ËÍ", "ÀÓÔ‡ÚÓÍËÎ",  "’≥ÚÏ‡Ì", "Œ˜Í‡ËÍ", "“≥Í“ÓÍÂ", "À≥ÌÍÓÎ¸Ì ¿·‡ÏÒ", "’Ó‰ÛÌÓÍ", "¬ÂÒÂÎ¸Ì≥Í", " ‡ÏÌÂ·ÛÈ", "ƒÂ‰≥ÌÒ‡È‰" };
+    string masName[14] = { "–î—ñ–∫–∞—Ä—å", "–†–∏–≥–∞—á", "–°–æ–ø–ª–µ–∂—É–π", "–õ–∞–∑—É–Ω", "–ü–∞—Ä–∫—É—Ä—â–∏–∫", "–õ–æ–ø–∞—Ç–æ–∫—Ä–∏–ª",  "–•—ñ—Ç–º–∞–Ω", "–û—á–∫–∞—Ä–∏–∫", "–¢—ñ–∫–¢–æ–∫–µ—Ä", "–õ—ñ–Ω–∫–æ–ª—å–Ω –ê–±—Ä–∞–º—Å", "–•–æ–¥—É–Ω–æ–∫", "–í–µ—Å–µ–ª—å–Ω—ñ–∫", "–ö–∞–º–Ω–µ–±—É–π", "–î–µ–¥—ñ–Ω—Å–∞–π–¥" };
     string armorName[5] = { "a", "f", "d", "h", "k" };
     string weaponName[5] = { "v", "g", "h", "k", "a" };
 
@@ -251,7 +251,7 @@ public:
         if (player->getXP() >= convertXp) {
             convertXp += 50;
             player->setLevel(player->getLevel() + 1);
-            cout << endl << "œÓÁ‰‡‚Îˇ˛! Û ‚‡Ò" << player->getLevel() << " lvl";
+            cout << endl << "–ü–æ–∑–¥—Ä–∞–≤–ª—è—é! —É –≤–∞—Å" << player->getLevel() << " lvl";
             player->setXP(0);
 
             player->setHp(player->getHp() + 10); // hp
@@ -278,14 +278,14 @@ public:
         }
 
         return new Monsters(
-            this->generateMonsterName(location),
-            50 * level,
-            level,
-            30 * level,
-            15 * level,
-            10 * level,
-            50 * level,
-            level
+                this->generateMonsterName(location),
+                50 * level,
+                level,
+                30 * level,
+                15 * level,
+                10 * level,
+                50 * level,
+                level
         );//string name, int scoreGet, int level, int energy, int damage, int block, int hp, int chanceBlock
     }
 
@@ -294,22 +294,22 @@ public:
         int tmpA;
         while (monster->getHpBoss() > 0) {
 
-            cout << endl << "¬‡¯ Û‰‡ Ì‡Ì≥Ò " << player->getDamage() << endl;
+            cout << endl << "–í–∞—à —É–¥–∞—Ä –Ω–∞–Ω—ñ—Å " << player->getDamage() << endl;
             monster->setHpBoss(monster->getHpBoss() - player->getDamage());
-            cout << "¿¡Œ¡”— Ì‡Ì≥Ò " << monster->getDamageBoss() << endl;
+            cout << "–ê–ë–û–ë–£–° –Ω–∞–Ω—ñ—Å " << monster->getDamageBoss() << endl;
             player->setHp(player->getHp() - monster->getDamageBoss());
             cout << endl;
 
             if (randomNum(0, 100) <= player->getMiss()) {
-                cout << endl << "¬Ë ÛÍÎÓÌËÎËÒ¸ ‚≥‰ Û‰‡‡" << endl;
+                cout << endl << "–í–∏ —É–∫–ª–æ–Ω–∏–ª–∏—Å—å –≤—ñ–¥ —É–¥–∞—Ä–∞" << endl;
                 Sleep(2500);
                 continue;
             }
 
             if (randomNum(0, 100) <= player->getChanceBlock()) {
                 tmpA = monster->getDamageBoss() - player->getBlock();
-                cout << endl << "¬Ë Á‡·ÎÓÍÛ‚‡ÎË " << player->getBlock() << endl;
-                cout << "¿¡Œ¡”— Ì‡Ì≥Ò " << tmpA << endl;
+                cout << endl << "–í–∏ –∑–∞–±–ª–æ–∫—É–≤–∞–ª–∏ " << player->getBlock() << endl;
+                cout << "–ê–ë–û–ë–£–° –Ω–∞–Ω—ñ—Å " << tmpA << endl;
                 player->setHp(player->getHp() - tmpA);
                 cout << endl;
                 Sleep(2500);
@@ -318,7 +318,7 @@ public:
 
             Sleep(2000);
         }
-        cout << "“Ë ‚ËÈ„‡‚(Î‡) ” ÚÂ·Â Á‡ÎË¯ËÎÓÒ¸ " << player->getHp() << endl << "“Ë ÔÓÎÛ˜Ë‚(Î‡) " << monster->getScoreGetBoss() << " XP";
+        cout << "–¢–∏ –≤–∏–π–≥—Ä–∞–≤(–ª–∞) –£ —Ç–µ–±–µ –∑–∞–ª–∏—à–∏–ª–æ—Å—å " << player->getHp() << endl << "–¢–∏ –ø–æ–ª—É—á–∏–≤(–ª–∞) " << monster->getScoreGetBoss() << " XP";
         //monster->setHpBoss(monster->getHpBoss() + monster->getHpBoss());
         //monster->setDamageBoss(monster->getDamageBoss() + monster->getDamageBoss());
         //monster->setScoreGetBoss(monster->getScoreGetBoss() + monster->getScoreGetBoss());
@@ -330,13 +330,13 @@ public:
         int tmpA;
 
         while (monster->getHp() > 0) {
-            cout << endl << "¬‡¯ Û‰‡ " << " Ì‡Ì≥Ò " << player->getDamage() << endl;
+            cout << endl << "–í–∞—à —É–¥–∞—Ä " << " –Ω–∞–Ω—ñ—Å " << player->getDamage() << endl;
             monster->setHp(monster->getHp() - player->getDamage());
 
             if (randomNum(0, 100) <= player->getMiss()) {
-                cout << "¬Ë ÛÍÎÓÌËÎËÒ¸ ‚≥‰ Û‰‡‡ " << endl;
+                cout << "–í–∏ —É–∫–ª–æ–Ω–∏–ª–∏—Å—å –≤—ñ–¥ —É–¥–∞—Ä–∞ " << endl;
                 if (randomNum(0, 100) <= 50) {// krit
-                    cout << "Ú‡ Ì‡ÌÂÒÎË ÍËÚË˜ÂÒÍËÈ ÛÓÌ" << endl;
+                    cout << "—Ç–∞ –Ω–∞–Ω–µ—Å–ª–∏ –∫—Ä–∏—Ç–∏—á–µ—Å–∫–∏–π —É—Ä–æ–Ω" << endl;
                     tmpA = player->getDamage() * 2;
                     monster->setHp(monster->getHp() - tmpA);
                 }
@@ -346,8 +346,8 @@ public:
 
             if (randomNum(0, 100) <= player->getChanceBlock()) {
                 tmpA = player->getDamage() - monster->getBlock();
-                cout << endl << monster->getName() << " Á‡·ÎÓÍÛ‚‡‚ " << monster->getBlock() << endl;
-                cout << "¬Ë Ì‡ÌÂÒÎË " << tmpA << endl;
+                cout << endl << monster->getName() << " –∑–∞–±–ª–æ–∫—É–≤–∞–≤ " << monster->getBlock() << endl;
+                cout << "–í–∏ –Ω–∞–Ω–µ—Å–ª–∏ " << tmpA << endl;
                 player->setHp(player->getHp() - tmpA);
                 cout << endl;
                 Sleep(2500);
@@ -356,15 +356,15 @@ public:
 
             if (randomNum(0, 100) <= player->getChanceBlock()) {
                 tmpA = monster->getDamage() - player->getBlock();
-                cout << endl << "¬Ë Á‡·ÎÓÍÛ‚‡ÎË " << player->getBlock() << endl;
-                cout << monster->getName() << " Ì‡Ì≥Ò " << tmpA << endl;
+                cout << endl << "–í–∏ –∑–∞–±–ª–æ–∫—É–≤–∞–ª–∏ " << player->getBlock() << endl;
+                cout << monster->getName() << " –Ω–∞–Ω—ñ—Å " << tmpA << endl;
                 player->setHp(player->getHp() - tmpA);
                 cout << endl;
                 Sleep(2500);
                 continue;
             }
 
-            cout << monster->getName() << " Ì‡Ì≥Ò " << monster->getDamage() << endl;
+            cout << monster->getName() << " –Ω–∞–Ω—ñ—Å " << monster->getDamage() << endl;
             player->setHp(player->getHp() - monster->getDamage());
             cout << endl;
 
@@ -373,46 +373,46 @@ public:
 
         }
 
-        cout << "“Ë ‚ËÈ„‡‚(Î‡) ” ÚÂ·Â Á‡ÎË¯ËÎÓÒ¸ " << player->getHp() << endl << "“Ë ÔÓÎÛ˜Ë‚(Î‡) " << monster->getScoreGet() << " XP";
+        cout << "–¢–∏ –≤–∏–π–≥—Ä–∞–≤(–ª–∞) –£ —Ç–µ–±–µ –∑–∞–ª–∏—à–∏–ª–æ—Å—å " << player->getHp() << endl << "–¢–∏ –ø–æ–ª—É—á–∏–≤(–ª–∞) " << monster->getScoreGet() << " XP";
     }
     void distributeFight(int mesto, Player* player, Monsters* monster) {
         if (mesto == 1) {
             cout << "\033[2J\033[1;1H";
-            cout << "¬Ë ÔÂÂÈ¯ÎË Ì‡ ÎÓÍ‡ˆ≥˛ À≥Ò" << endl;
+            cout << "–í–∏ –ø–µ—Ä–µ–π—à–ª–∏ –Ω–∞ –ª–æ–∫–∞—Ü—ñ—é –õ—ñ—Å" << endl;
 
             monster->getName();
-            cout << endl << "œÓÚË ‚‡Ò " << monster->getName() << " ÈÓ„Ó Hp =" << " " << monster->getHp();
+            cout << endl << "–ü—Ä–æ—Ç–∏ –≤–∞—Å " << monster->getName() << " –π–æ–≥–æ Hp =" << " " << monster->getHp();
             fight(player, monster);
         }
         else if (mesto == 2) {
             cout << "\033[2J\033[1;1H";
-            cout << "¬Ë ÔÂÂÈ¯ÎË Ì‡ ÎÓÍ‡ˆ≥˛ «‡·Ó¯Í‡" << endl;
+            cout << "–í–∏ –ø–µ—Ä–µ–π—à–ª–∏ –Ω–∞ –ª–æ–∫–∞—Ü—ñ—é –ó–∞–±—Ä–æ—à–∫–∞" << endl;
 
             monster->getName();
-            cout << endl << "œÓÚË ‚‡Ò " << monster->getName() << " ÈÓ„Ó Hp =" << " " << monster->getHp();
+            cout << endl << "–ü—Ä–æ—Ç–∏ –≤–∞—Å " << monster->getName() << " –π–æ–≥–æ Hp =" << " " << monster->getHp();
             fight(player, monster);
         }
         else if (mesto == 3) {
             cout << "\033[2J\033[1;1H";
-            cout << "¬Ë ÔÂÂÈ¯ÎË Ì‡ ÎÓÍ‡ˆ≥˛ √ÓÓ‰" << endl;
+            cout << "–í–∏ –ø–µ—Ä–µ–π—à–ª–∏ –Ω–∞ –ª–æ–∫–∞—Ü—ñ—é –ì–æ—Ä–æ–¥" << endl;
 
             monster->getName();
-            cout << endl << "œÓÚË ‚‡Ò " << monster->getName() << " ÈÓ„Ó Hp =" << " " << monster->getHp();
+            cout << endl << "–ü—Ä–æ—Ç–∏ –≤–∞—Å " << monster->getName() << " –π–æ–≥–æ Hp =" << " " << monster->getHp();
             fight(player, monster);
         }
         else if (mesto == 4) {
             cout << "\033[2J\033[1;1H";
-            cout << "¬Ë ÔÂÂÈ¯ÎË Ì‡ ÎÓÍ‡ˆ≥˛ œÂ˘ÂË" << endl;
+            cout << "–í–∏ –ø–µ—Ä–µ–π—à–ª–∏ –Ω–∞ –ª–æ–∫–∞—Ü—ñ—é –ü–µ—â–µ—Ä–∏" << endl;
 
             monster->getName();
-            cout << endl << "œÓÚË ‚‡Ò " << monster->getName() << " ÈÓ„Ó Hp =" << " " << monster->getHp();
+            cout << endl << "–ü—Ä–æ—Ç–∏ –≤–∞—Å " << monster->getName() << " –π–æ–≥–æ Hp =" << " " << monster->getHp();
             fight(player, monster);
         }
         else if (mesto == 5) {
             cout << "\033[2J\033[1;1H";
-            cout << "¬Ë ÔÂÂÈ¯ÎË Ì‡ ÎÓÍ‡ˆ≥˛  ‡Ú‡ÍÓÏ·Ë" << endl;
+            cout << "–í–∏ –ø–µ—Ä–µ–π—à–ª–∏ –Ω–∞ –ª–æ–∫–∞—Ü—ñ—é –ö–∞—Ç–∞–∫–æ–º–±–∏" << endl;
 
-            cout << endl << "œÓÚË ‚‡Ò ¿¡Œ¡”— ÈÓ„Ó Hp =" << " " << monster->getHpBoss();
+            cout << endl << "–ü—Ä–æ—Ç–∏ –≤–∞—Å –ê–ë–û–ë–£–° –π–æ–≥–æ Hp =" << " " << monster->getHpBoss();
             fightBoss(player, monster);
         }
 
@@ -437,34 +437,34 @@ int main() {
     srand(time(NULL));
     progressBar(100);
 
-    Player* player = NULL; 
+    Player* player = NULL;
     Engine* engine = new Engine();
     Monsters* monster = NULL;
     int fraction;
     string name;
     int mesto;
 
-    cout << "À‡ÒÍ‡‚Ó ÔÓÒËÏÓ Û DeadMoon" << endl;
-    cout << "ﬂÍ ‚Ë Ì‡Á‚ÂÚÂ Ò‚Ó„Ó „ÂÓˇ?" << endl;
+    cout << "–õ–∞—Å–∫–∞–≤–æ –ø—Ä–æ—Å–∏–º–æ —É DeadMoon" << endl;
+    cout << "–Ø–∫ –≤–∏ –Ω–∞–∑–≤–µ—Ç–µ —Å–≤–æ–≥–æ –≥–µ—Ä–æ—è?" << endl;
     cin >> name;
 
-    cout << endl << "ﬂÍÛ ‚Ë ‚Ë·ÂÂÚÂ Ù‡Íˆ≥˛?" << endl;
-    cout << "1)“‡ÌÍ + ‰Ó ·ÎÓÍ ÛÓÌ‡" << endl << "2)¬‡‚‡ + ‰Ó ÛÓÌÛ" << endl << "3)–ÓÁ·≥ÈÌËÍ + ‰Ó ÛÍÎÓÌÂÌË˛" << endl;
+    cout << endl << "–Ø–∫—É –≤–∏ –≤–∏–±–µ—Ä–µ—Ç–µ —Ñ—Ä–∞–∫—Ü—ñ—é?" << endl;
+    cout << "1)–¢–∞–Ω–∫ + –¥–æ –±–ª–æ–∫ —É—Ä–æ–Ω–∞" << endl << "2)–í–∞—Ä–≤–∞—Ä + –¥–æ —É—Ä–æ–Ω—É" << endl << "3)–†–æ–∑–±—ñ–π–Ω–∏–∫ + –¥–æ —É–∫–ª–æ–Ω–µ–Ω–∏—é" << endl;
     cin >> fraction;
 
     if (fraction < 1 || fraction > 3) {
-        cout << "Œ¯Ë·Í‡ ÕÂÔ‡‚ËÎ¸ÌÓ ‚Â‰‰ÂÌ≥ ‰‡Ì≥ ";
+        cout << "–û—à–∏–±–∫–∞ –ù–µ–ø—Ä–∞–≤–∏–ª—å–Ω–æ –≤–µ–¥–¥–µ–Ω—ñ –¥–∞–Ω—ñ ";
         exit(0);
     }
 
-    cout << "ﬂÍÛ ‚Ë ‚Ë·ÂËÚÂ ÎÓÍ‡ˆ≥˛ ‰Îˇ Ò‚Ó„Ó ÔÂ‚Ó„Ó ÔÓıÓ‰‡?" << endl;
+    cout << "–Ø–∫—É –≤–∏ –≤–∏–±–µ—Ä–∏—Ç–µ –ª–æ–∫–∞—Ü—ñ—é –¥–ª—è —Å–≤–æ–≥–æ –ø–µ—Ä–≤–æ–≥–æ –ø–æ—Ö–æ–¥–∞?" << endl;
 
     while (true) {
 
-        cout << endl << "1)À≥Ò" << endl << "2)«‡·Ó¯Í‡" << endl << "3)Ã≥ÒÚÓ" << endl << "4)œÂ˜ÂË" << endl << "5)  ‡Ú‡ÍÓÏ·Ë ¡ÓÒÒ(¬‡ÊÍÓ)";
+        cout << endl << "1)–õ—ñ—Å" << endl << "2)–ó–∞–±—Ä–æ—à–∫–∞" << endl << "3)–ú—ñ—Å—Ç–æ" << endl << "4)–ü–µ—á–µ—Ä–∏" << endl << "5) –ö–∞—Ç–∞–∫–æ–º–±–∏ –ë–æ—Å—Å(–í–∞–∂–∫–æ)";
         cin >> mesto;
 
-        if (mesto < 1 || mesto > 5) { // ÔÂÂ‚≥ˇ∫
+        if (mesto < 1 || mesto > 5) { // –ø–µ—Ä–µ–≤—ñ—Ä—è—î
             cout << "Error 404";
             exit(0);
         }
@@ -478,7 +478,7 @@ int main() {
         engine->converterXP(player);
         player->setXP(player->getXP() + monster->getScoreGet());
 
-        cout << endl << "—Ú‡ÚËÒÚËÍ‡ ‚‡¯Ó„Ó „ÂÓˇ" << endl;
+        cout << endl << "–°—Ç–∞—Ç–∏—Å—Ç–∏–∫–∞ –≤–∞—à–æ–≥–æ –≥–µ—Ä–æ—è" << endl;
         player->showStaticPlayer();
         Sleep(3000);
 
