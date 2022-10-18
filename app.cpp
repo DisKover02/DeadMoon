@@ -1,10 +1,12 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <Windows.h>
 #include <ctime>
 #include <vector>
 #include <cstring>
 #include <conio.h>
+#include <stdio.h>
 
 
 using namespace std;
@@ -78,8 +80,8 @@ private:
     int protection;
 public:
     Armor(string name, int protection, int price) : Items(name, price) {
-
         this->protection = protection;
+        this->price = this->protection * 150;
     }
 
 
@@ -158,6 +160,7 @@ public:
     }
 
     int damageWithWeapon() {
+
         this->setDamage(this->getDamage() + this->weapon->getDamage());
         return this->getDamage();
     }
@@ -188,6 +191,7 @@ public:
         this->damage = damage;
         this->block = block;
         this->chanceBlock = chanceBlock;
+        this->moneyGet = moneyGet;
     }
     //boss
     int getHpBoss() { return HpBoss; }
@@ -227,14 +231,55 @@ public:
 };
 
 
+class ManageData {
+private:
+    ofstream saveFile;
+    ifstream loadFile;
 
+public:
 
+    void savePlayer(Player* player) {
+        saveFile.open("d:\\DataPlayer.txt");
+        if (!saveFile.is_open()) {
+            saveFile.close();
+            cout << endl << "Помилка*Error 1236" << endl << "Дані не coхранились*Data not saved" << endl;
+        }
+        else {
+            cout << endl << "Файл Успішно открився!" << endl;
+            saveFile.write((char*)&player, sizeof(Player));
+        }
+        saveFile.close();
+        cout << endl << "Файл Успішно закрився" << endl;
+    }
+
+    void loadPlayer(Player* player) {
+        int tmp;
+        loadFile.open("d:\\DataPlayer.txt");
+        if (!(loadFile >> tmp)) {
+            cout << endl << "Помилка*Error 1235" << endl << "Дані не знашлись*Data not found" << endl; //колись добавлю try-catch в ігру
+        }
+
+        if (!loadFile.is_open()) {
+            cout << endl << "Помилка откриття файла!" << endl;
+        }
+        else {
+            cout << "Файл Успішно открився!" << endl;
+            while (loadFile.read((char*)&player, sizeof(Player))) {// тут я незнаю
+
+            }
+        }
+        loadFile.close();
+        cout << "Файл Успішно закрився" << endl;
+
+    }
+
+};
 
 class Engine {
 private:
-    vector <string> masName{ "Дікарь", "Ригач", "Соплежуй", "Лазун", "Паркурщик", "Лопатокрил",  "Хітман", "Очкарик", "ТікТокер", "Лінкольн Абрамс", "Ходунок", "Весельнік", "Камнебуй", "Дедінсайд" };
-    vector <string> armorName = { "Кольчужна Броня", "Металева Броня", "Броня Бога", "Броня Ада", "Кожана Броня" };
-    vector <string> weaponName = { "Кристалис", "Башер", "Даедалус", "ЕхоСабре", "Кая", "Яша", "Сендж" };
+    vector <string> masName { "Дікарь", "Ригач", "Соплежуй", "Лазун", "Паркурщик", "Лопатокрил",  "Хітман", "Очкарик", "ТікТокер", "Лінкольн Абрамс", "Ходунок", "Весельнік", "Камнебуй", "Дедінсайд" };
+    vector <string> armorName  { "Кольчужна Броня", "Металева Броня", "Броня Бога", "Броня Ада", "Кожана Броня" };
+    vector <string> weaponName  { "Кристалис", "Башер", "Даедалус", "ЕхоСабре", "Кая", "Яша", "Сендж" };
 
     int randomNum(int min, int max) {
         return  min + rand() % (max - min + 1);
@@ -274,10 +319,14 @@ private:
 public:
 
     Weapon* regenerateWeapon() {
-        return new Weapon(generateName(true), randomNum(3, 20), 1200);
+        int tmp;
+        tmp = randomNum(3, 20);
+        return new Weapon(generateName(true), tmp, 1000);
     }
     Armor* regenerateArmor() {
-        return new Armor(generateName(), randomNum(3, 20), 1500);
+        int tmp;
+        tmp = randomNum(3, 20);
+        return new Armor(generateName(), tmp, 1500);
     }
 
     Player* createPlayer(string name, int classType) {
@@ -293,7 +342,7 @@ public:
             miss *= 2;
         }
 
-        return new Player(name, 30, 45, miss, 0, damage, block, 10, 0);
+        return new Player(name, 30, 60, miss, 0, damage, block, 10, 0);
     }
 
     void converterXP(Player* player) {
@@ -364,6 +413,8 @@ private:
     }
 
 public:
+
+
     Event(Engine* engine) {
         this->engine = engine;
     }
@@ -371,8 +422,8 @@ public:
     void shop(Player* player, Weapon* weapon, Armor* armor) {
         while (bool x = true) {
             int choiceShop;
-            int choiceProduct;
-            int pos = 0;
+            int posProduct = 0;
+            //string statusPos = " не куплено ";
 
             cout << "Що ви хочете зробити?" << endl << "1)Купити Меч" << endl << "2)Купити Броню" << endl << "3)Вийти з магазина" << endl;
             cin >> choiceShop;
@@ -385,27 +436,40 @@ public:
                     }
                 }
 
-
                 cout << "Який меч ви хочете купити?" << endl;
 
-                for (int i = 0; i < 1 + rand() % 3; i++) {
-                    cout << i + 1 << ") " << weaponList[i]->getName() << " " << weaponList[i]->getPrice() << endl;
+                for (int i = 0; i < weaponList.size(); i++) {
+                    cout << i + 1 << ") " << weaponList[i]->getName() << " " << weaponList[i]->getPrice() << " " << weaponList[i]->getDamage() << " damage" << endl;
                 }
+                cout << "3)Вийти з магазина" << endl;
+                cin >> posProduct;
 
-                cin >> pos;
 
-
-                if (pos == 1) {
-                    if (this->checkMoney(player->getMoney(), weaponList[pos - 1]->getPrice())) {
-                        player->setMoney(player->getMoney() - weaponList[pos - 1]->getPrice());
-                        player->setWeapon(weaponList[pos - 1]);
+                if (posProduct == 1) {
+                    if (this->checkMoney(player->getMoney(), weaponList[posProduct - 1]->getPrice())) {
+                        player->setMoney(player->getMoney() - weaponList[posProduct - 1]->getPrice());
+                        player->setWeapon(weaponList[posProduct - 1]);
                     }
-                    player->damageWithWeapon();
+                    //player->damageWithWeapon();
+
                 }
+                else if (posProduct == 2) {
+                    if (this->checkMoney(player->getMoney(), weaponList[posProduct - 1]->getPrice())) {
+                        player->setMoney(player->getMoney() - weaponList[posProduct - 1]->getPrice());
+                        player->setWeapon(weaponList[posProduct - 1]);
+                    }
+                    //player->damageWithWeapon();
 
-
+                }
+                else if (posProduct == 3) {
+                    x = false;
+                    break;
+                }
+            }
+            if (choiceShop == 2) {
 
                 if (armorList.empty()) {
+                    armorList.clear();
                     for (int i = 0; i < 1 + rand() % 3; i++) {
                         armorList.push_back(this->engine->regenerateArmor());
                     }
@@ -413,17 +477,32 @@ public:
 
                 cout << "Яку Броню ви хочите купити?" << endl;
 
-                for (int i = 0; i < 1 + rand() % 3; i++) {
-                    cout << i + 1 << ") " << armorList[i]->getName() << " " << armorList[i]->getPrice() << endl;
+                for (int i = 0; i < armorList.size(); i++) {
+                    cout << i + 1 << ") " << armorList[i]->getName() << " " << armorList[i]->getPrice() << " " << armorList[i]->getProtection() << " block" << endl;
                 }
 
-                cin >> pos;
+                cin >> posProduct;
+                if (posProduct == 1) {
 
-                if (this->checkMoney(player->getMoney(), armorList[pos - 1]->getPrice())) {
-                    player->setMoney(player->getMoney() - armorList[pos - 1]->getPrice());
-                    player->setArmor(armorList[pos - 1]);
+                    if (this->checkMoney(player->getMoney(), armorList[posProduct - 1]->getPrice())) {
+                        player->setMoney(player->getMoney() - armorList[posProduct - 1]->getPrice());
+                        player->setArmor(armorList[posProduct - 1]);
+
+                    }
+                }
+                else if (posProduct == 2) {
+                    if (this->checkMoney(player->getMoney(), weaponList[posProduct - 1]->getPrice())) {
+                        player->setMoney(player->getMoney() - weaponList[posProduct - 1]->getPrice());
+                        player->setWeapon(weaponList[posProduct - 1]);
+                    }
+
+
                 }
 
+                else if (posProduct == 3) {
+                    x = false;
+                    break;
+                }
             }
             else if (choiceShop == 3) {
                 x = false;
@@ -488,7 +567,7 @@ public:
     void fight(Player* player, Monsters* monster) {
         int tmpA;
 
-        while (monster->getHp() > 0) {
+        while (monster->getHp() > 0 || player->getHp() > 0) {
 
             cout << endl << "Ваш удар " << " наніс " << player->getDamage() << endl;
             monster->setHp(monster->getHp() - player->getDamage());
@@ -535,7 +614,7 @@ public:
 
         player->setXP(player->getXP() + monster->getScoreGet());
         player->setMoney(player->getMoney() + monster->getMoneyGet());
-        cout << "Ти вийграв(ла) У тебе залишилось " << player->getHp() << endl << "Ти получив(ла) " << monster->getScoreGet() << " XP" << endl << " І " << monster->getMoneyGet() << " монеток";
+        cout << "Ти вийграв(ла) У тебе залишилось " << player->getHp() << endl << "Ти получив(ла) " << monster->getScoreGet() << " XP" << endl << " І " << monster->getMoneyGet() << " монеток";//чогось тут вертає hp = 0
         clickContinue();
 
     }
@@ -561,53 +640,88 @@ public:
     }
 };
 
-
-
-void progressBar(int sleep) {
+//////////////////////////////////////////////////////////////////////////////// for progress bar
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+void progressBar(int sleep, string saveLoadBoost, bool boost, int boostDiapazon) {
     cout << endl << endl;
-    cout << "                   Loading..." << endl;
+    cout << "                   " << saveLoadBoost << "..." << endl;
     cout << "    ";
-    for (int i = 0; i < 40; i++) {
-        Sleep(sleep);
-        cout << "|";
+    if (boost == true) {
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+        for (int i = 0; i < boostDiapazon; i++) {
+            cout << (char)(rand() % (255 - 47) + 48) << ' ';//hack pentagon data
+        }
+        cout << endl << "Loading welldone";
+        Sleep(200);
+        cout << "\033[2J\033[1;1H";
     }
-    system("cls");
-}
+    else {
+        for (int i = 0; i < 40; i++) {
+            Sleep(sleep);
+            cout << "|";
+        }
+        system("cls");
+    }
 
+}
+////////////////////////////////////////////////////////////////////////////////////////
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     srand(time(NULL));
-    progressBar(25);
-
+    progressBar(35, "Loading", false, 0);// progressBar(0, "Loading", true, 80000);
+    ManageData* manageData = new ManageData();
     Player* player = NULL;
     Engine* engine = new Engine();
     Monsters* monster = NULL;
     Weapon* weapon = NULL;
     Armor* armor = NULL;
     Event* event = new Event(engine);
-    int fraction;
-    string name;
-    int mesto;
-    int choice;
+
+    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+
+    int choiceLoad = 0;
+    int fraction = 0;
+    string name = "";
+    int mesto = 0;
+    int choice = 0;
+
+
 
     cout << "Ласкаво просимо у DeadMoon" << endl;
-    cout << "Як ви назвете свого героя?" << endl;
-    cin >> name;
+    cout << "Якщо ви уже грали можете загрузить прогрес \n1)Загрузить\n2)Все з нуля" << endl;
+    cin >> choiceLoad;
+    if (choiceLoad == 1) {
+        manageData->loadPlayer(player);
+        clickContinue();
+        cout << "\033[2J\033[1;1H";
+    }
 
-    cout << endl << "Яку ви виберете фракцію?" << endl;
-    cout << "1)Танк + до блок урона" << endl << "2)Варвар + до урону" << endl << "3)Розбійник + до уклонению" << endl;
-    cin >> fraction;
+    else if (choiceLoad == 2) {
+        cout << "Як ви назвете свого героя?" << endl;
+        cin >> name;
 
-    if (fraction < 1 || fraction > 3) {
-        cout << "Ошибка Неправильно веддені дані ";
+        cout << endl << "Яку ви виберете фракцію?" << endl;
+        cout << "1)Танк + до блок урона" << endl << "2)Варвар + до урону" << endl << "3)Розбійник + до уклонению" << endl;
+        cin >> fraction;
+
+
+        if (fraction < 1 || fraction > 3) {
+            cout << "Ошибка Неправильно веддені дані ";
+            exit(0);
+        }
+    }
+    else {
+        cout << endl << "Помилка 1253";
         exit(0);
     }
-    player = engine->createPlayer(name, fraction);
 
+
+
+    player = engine->createPlayer(name, fraction);
     cout << "Що ви хочете зробити?" << endl;
 
-    while (true) {
+    while (int x = true) {
         cout << "1)В подорож" << endl << "2)Магазин" << endl << "3)Показати статистику героя " << endl << "4)Вийти з Ігри" << endl;// вибір
         cin >> choice;
 
@@ -636,10 +750,19 @@ int main() {
             cout << "\033[2J\033[1;1H";
         }
         else if (choice == 4) {
+            int choiceSave;
+            cout << endl << "Хочете сохранить прогрес? " << endl << "1)ДА \n2)Не" << endl;
+            cin >> choiceSave;
+            if (choiceSave == 1) {
+                manageData->savePlayer(player);
+                progressBar(0, "Saving", true, 80000);
+                cout << endl << "Ігра Успішно збережена" << endl;
+            }
+
             exit(0);
         }
 
-        progressBar(30);
+        progressBar(30, "Loading", false, 0);
 
         cout << "\033[2J\033[1;1H";
 
