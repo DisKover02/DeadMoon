@@ -385,15 +385,15 @@ public:
         }
 
         return new Monsters(
-                this->generateMonsterName(location),
-                50 * level * mod,
-                level,
-                30 * level * mod,
-                15 * level * mod,
-                10 * level * mod,
-                50 * level * mod,
-                level,
-                90 * level
+            this->generateMonsterName(location),
+            50 * level * mod,
+            level,
+            30 * level * mod,
+            15 * level * mod,
+            10 * level * mod,
+            50 * level * mod,
+            level,
+            90 * level
         );//string name, int scoreGet, int level, int energy, int damage, int block, int hp, int chanceBlock, int moneyGet
     }
 };
@@ -620,6 +620,18 @@ public:
     }
 
     void distributeFight(int mesto, Player* player, Monsters* monster) {
+        int tmp = NULL;
+        tmp = randomNum(0, 100);
+        if (tmp <= 40) {
+
+        }
+        else if (tmp >= 41 && tmp <= 60) {
+            player->setHp(player->getHp() + randomNum(1, 30));
+        }
+        else {
+            player->setDamage(player->getDamage() + randomNum(1, 15));
+        }
+
         if (mesto == 1) {
             showRoundData("Ліс", monster->getName(), monster->getHp());
         }
