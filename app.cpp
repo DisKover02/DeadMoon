@@ -681,7 +681,7 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     srand(time(NULL));
-    progressBar(35, "Loading", false, 0);// progressBar(0, "Loading", true, 80000);
+    progressBar(35, "Loading", false, 0);// progressBar(0, "Loading", true, 80000); see in fullscreen
     ManageData* manageData = new ManageData();
     Player* player = NULL;
     Engine* engine = new Engine();
