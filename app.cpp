@@ -627,11 +627,14 @@ public:
         }
         else if (tmp >= 41 && tmp <= 60) {
             player->setHp(player->getHp() + randomNum(1, 30));
+            cout << endl << "Вам Повезло ви знайшли яблуко еви  +hp" << endl;
         }
         else {
             player->setDamage(player->getDamage() + randomNum(1, 15));
+            cout << endl << "Вам Повезло монстр без ноги +damage" << endl;
         }
 
+        
         if (mesto == 1) {
             showRoundData("Ліс", monster->getName(), monster->getHp());
         }
