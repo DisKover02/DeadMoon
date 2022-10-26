@@ -722,7 +722,11 @@ public:
             cout << endl << "Вам Повезло монстр без ноги +damage" << endl;
         }
 
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> fd85e3f0fd756ea5409273a0d7beb0b78541c912
         if (mesto == 1) {
             showRoundData("Ліс", monster->getName(), monster->getHp(), player->getHp());
         }
@@ -888,8 +892,11 @@ int main() {
 
     }
 }
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> fd85e3f0fd756ea5409273a0d7beb0b78541c912
